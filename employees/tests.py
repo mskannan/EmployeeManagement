@@ -1,6 +1,7 @@
 from django.test import TestCase
 from employees.models import Employee
 from django.db.utils import IntegrityError
+from django.core.exceptions import ValidationError
 
 class EmployeeModelTest(TestCase):
 
@@ -60,3 +61,26 @@ class EmployeeModelTest(TestCase):
                 username="Basith1234",
                 password="Password@123"
             )
+
+    # Test case to check password complexity (lowercase, uppercase, special char, and minimum length)
+    def test_password_complexity(self):
+        # Password too simple (just lowercase letters)
+        with self.assertRaises(ValidationError):
+            employee = Employee(
+                name="WeakPassUser",
+                email="weakpass@example.com",
+                phone="1234567890",
+                username="weakuser1",
+                password="password@123"  # This is too simple and doesn't meet the complexity requirements
+            )
+            employee.full_clean()  # This will trigger model validation
+
+        # Password valid (meets complexity requirements)
+        employee = Employee(
+            name="StrongPassUser",
+            email="strongpass@example.com",
+            phone="9876543210",
+            username="stronguser1",
+            password="Password@123"  # This meets the complexity requirements
+        )
+        employee.full_clean()  # This should pass validation
