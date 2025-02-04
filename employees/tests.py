@@ -124,4 +124,15 @@ class EmployeeModelTest(TestCase):
             )
             employee.full_clean()  # This should raise ValidationError due to empty email
 
-
+    #check Test password with spaces
+    def test_password_with_spaces(self):
+        # Try creating an employee with a password containing spaces (invalid)
+        with self.assertRaises(ValidationError):
+            employee = Employee(
+                name="SpacePassUser",
+                email="spacepassuser@example.com",
+                phone="1234567890",
+                username="spaceuser1",
+                password="Pass word@123"  # Invalid password with spaces
+            )
+            employee.full_clean()  # This should raise ValidationError due to spaces in the password
