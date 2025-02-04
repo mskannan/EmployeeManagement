@@ -84,3 +84,17 @@ class EmployeeModelTest(TestCase):
             password="Password@123"  # This meets the complexity requirements
         )
         employee.full_clean()  # This should pass validation
+
+    #check if the employee username is alphanumeric
+    def test_username_alphanumeric(self):
+        # Username with non-alphanumeric character (invalid username)
+        with self.assertRaises(ValidationError):
+            employee = Employee(
+                name="InvalidUser",
+                email="invaliduser@example.com",
+                phone="9876543210",
+                username="invalid$user",  # Invalid username with a special character
+                password="Password@123"
+            )
+            employee.full_clean()  # This should raise ValidationError due to non-alphanumeric character
+
