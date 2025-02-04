@@ -111,3 +111,17 @@ class EmployeeModelTest(TestCase):
             )
             employee.full_clean()  # This should raise ValidationError
 
+    #Check empty email validation
+    def test_empty_email(self):
+        # Try creating an employee with no email
+        with self.assertRaises(ValidationError):
+            employee = Employee(
+                name="NoEmailUser",
+                email="",  # Empty email
+                phone="1234567890",
+                username="noemailuser1",
+                password="Password@123"
+            )
+            employee.full_clean()  # This should raise ValidationError due to empty email
+
+
