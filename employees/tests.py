@@ -40,4 +40,23 @@ class EmployeeModelTest(TestCase):
                 username="sentha12345",
                 password="Password@123"
             )
- 
+
+    # Test case to check phone uniqueness
+    def test_employee_phone_unique(self):
+        # Create an employee with a unique phone number
+        Employee.objects.create(
+            name="Ramkumar",
+            email="ramkumar@mail.in",
+            phone="5555555555",
+            username="Ramkumar1234",
+            password="Password@123"
+        )
+        # Check that trying to create another employee with the same phone number raises an IntegrityError
+        with self.assertRaises(IntegrityError):
+            Employee.objects.create(
+                name="Basith",
+                email="basith@mail.in",
+                phone="5555555555",  # Same phone as Alice
+                username="Basith1234",
+                password="Password@123"
+            )
