@@ -98,3 +98,16 @@ class EmployeeModelTest(TestCase):
             )
             employee.full_clean()  # This should raise ValidationError due to non-alphanumeric character
 
+    #check if the password length is at least 8 characters
+    def test_password_min_length(self):
+        # Password too short (less than 8 characters)
+        with self.assertRaises(ValidationError):
+            employee = Employee(
+                name="ShortPasswordUser",
+                email="shortpassuser@example.com",
+                phone="1234567890",
+                username="shortpass1",
+                password="Short1"  # Password length less than 8 characters
+            )
+            employee.full_clean()  # This should raise ValidationError
+
